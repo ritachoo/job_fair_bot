@@ -1,0 +1,10 @@
+[tool.poetry]
+name = "omp_bot"
+version = "0.1.0"
+description = "OMP Job Fair bot"
+authors = ["Rita Butenko"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+telebot = "^0.0.5"
