@@ -19,7 +19,7 @@ bot.remove_webhook()
 def start_message(message):
     # Сохраняем ID чата, чтобы потом отправить ответы в другой канал
     chat_id = message.chat.id
-    with open('img/img_start.jpg', 'rb') as photo:
+    with open('img/img_start.jpeg', 'rb') as photo:
         bot.send_photo(message.chat.id, photo)
     bot.send_message(chat_id, '👋Привет! Это бот компании "Котик". Чтобы получить возможность '
                               'попасть к нам на стажировку, оставь информацию о себе. Для начала, давай познакомимся. '
@@ -54,7 +54,7 @@ def ask_info(message, name):
     markup.row(types.KeyboardButton('3'))
     markup.row(types.KeyboardButton('4'))
     # Задаем следующий вопрос
-    with open('img/img_question.jpg', 'rb') as photo:
+    with open('img/img_question.jpeg', 'rb') as photo:
         bot.send_photo(message.chat.id, photo)
     bot.send_message(chat_id, 'Расскажи, на каком курсе ты учишься?', reply_markup=markup)
     # Устанавливаем состояние "ожидание курса обучения"
@@ -112,7 +112,7 @@ def ask_internship_direction(message, name, year_of_study, course_of_study):
     bot.send_message(statistic_chat_id, f'Студент: {name}\nКурс обучения: {year_of_study}\nНаправление обучения: '
                                         f'{course_of_study}\nЖелаемое направление стажировки: {internship_direction}\n'
                                         f'TelegramID: {telegram_id}\nUsername: {username}')
-    with open('img/img_finish.jpg', 'rb') as photo:
+    with open('img/img_finish.jpeg', 'rb') as photo:
         bot.send_photo(message.chat.id, photo)
     bot.send_message(chat_id, 'Спасибо за ответы! Мы обязательно свяжемся с тобой по поводу указанного направления '
                               'стажировки. А пока ты можешь узнать о нас более подробно на нашем сайте',
