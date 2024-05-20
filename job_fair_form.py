@@ -1,3 +1,4 @@
+import os
 import pip
 
 pip.main(['install', 'pytelegrambotapi'])
@@ -5,8 +6,8 @@ pip.main(['install', 'pytelegrambotapi'])
 import telebot
 from telebot import types
 
-token = '6130393182:AAFVoEM-572mBzw6JvWEgit6NoUXkg47Gys'
-statistic_chat_id = '-1001938030768'
+token = os.getenv('TOKEN')
+statistic_chat_id = os.getenv('CHAT_ID')
 
 # Создаем бота
 bot = telebot.TeleBot(token)
@@ -18,9 +19,9 @@ bot.remove_webhook()
 def start_message(message):
     # Сохраняем ID чата, чтобы потом отправить ответы в другой канал
     chat_id = message.chat.id
-    with open('img/omp_start.jpg', 'rb') as photo:
+    with open('img/img_start.jpg', 'rb') as photo:
         bot.send_photo(message.chat.id, photo)
-    bot.send_message(chat_id, '👋Привет! Это бот компании "Открытая Мобильная Платформа". Чтобы получить возможность '
+    bot.send_message(chat_id, '👋Привет! Это бот компании "Котик". Чтобы получить возможность '
                               'попасть к нам на стажировку, оставь информацию о себе. Для начала, давай познакомимся. '
                               'Напиши свои имя и фамилию👇')
     # Устанавливаем состояние "ожидание имени"
@@ -37,13 +38,7 @@ def ask_name(message):
     markup.row(types.KeyboardButton('Ок, продолжим'))
     # Задаем следующий вопрос
     bot.send_message(chat_id, 'Приятно познакомиться, ' + name + '! Немного о нашей компании: Мы занимаемся '
-                                                                 'разработкой и внедрением первой отечественной '
-                                                                 'мобильной ОС Аврора и платформы управления '
-                                                                 'корпоративными мобильными устройствами Аврора '
-                                                                 'Центр, а также других решений, которые позволяют '
-                                                                 'строить доверенную мобильную среду, гарантируя '
-                                                                 'повышение производительности и защиту '
-                                                                 'чувствительной информации. А теперь немного '
+                                                                 'Котиками. А теперь немного '
                                                                  'о тебе...', reply_markup=markup)
     # Устанавливаем состояние "ожидание инфо"
     bot.register_next_step_handler(message, ask_info, name)
@@ -59,6 +54,8 @@ def ask_info(message, name):
     markup.row(types.KeyboardButton('3'))
     markup.row(types.KeyboardButton('4'))
     # Задаем следующий вопрос
+    with open('img/img_question.jpg', 'rb') as photo:
+        bot.send_photo(message.chat.id, photo)
     bot.send_message(chat_id, 'Расскажи, на каком курсе ты учишься?', reply_markup=markup)
     # Устанавливаем состояние "ожидание курса обучения"
     bot.register_next_step_handler(message, ask_year_of_study, name)
@@ -72,6 +69,8 @@ def ask_year_of_study(message, name):
     # Удалаем варианты предыдущего вопроса
     markup = types.ReplyKeyboardRemove()
     # Задаем следующий вопрос
+    with open('img/img_question.jpg', 'rb') as photo:
+        bot.send_photo(message.chat.id, photo)
     bot.send_message(chat_id, 'Отлично! Напиши свое направление обучения', reply_markup=markup)
     # Устанавливаем состояние "ожидание направления стажировки"
     bot.register_next_step_handler(message, ask_course_of_study, name, year_of_study)
@@ -89,6 +88,8 @@ def ask_course_of_study(message, name, year_of_study):
     markup.row(types.KeyboardButton('Разработка'))
     markup.row(types.KeyboardButton('Инфраструктура разработки (DevOps)'))
     # Задаем следующий вопрос
+    with open('img/img_question.jpg', 'rb') as photo:
+        bot.send_photo(message.chat.id, photo)
     bot.send_message(chat_id, 'Круто! А теперь выбери какое направление стажировки тебе интересно?',
                      reply_markup=markup)
     # Устанавливаем состояние "ожидание направления стажировки"
@@ -102,7 +103,7 @@ def ask_internship_direction(message, name, year_of_study, course_of_study):
     internship_direction = message.text
     # Добавляем кнопку сайта
     markup = types.InlineKeyboardMarkup()
-    markup.add(types.InlineKeyboardButton("Перейти на сайт", url='https://omp.ru/'))
+    markup.add(types.InlineKeyboardButton("Перейти на сайт", url='https://borisik-cat.tilda.ws/'))
 
     # Получаем telegram_id студента
     telegram_id = message.from_user.id
@@ -111,7 +112,7 @@ def ask_internship_direction(message, name, year_of_study, course_of_study):
     bot.send_message(statistic_chat_id, f'Студент: {name}\nКурс обучения: {year_of_study}\nНаправление обучения: '
                                         f'{course_of_study}\nЖелаемое направление стажировки: {internship_direction}\n'
                                         f'TelegramID: {telegram_id}\nUsername: {username}')
-    with open('img/omp_finish.jpg', 'rb') as photo:
+    with open('img/img_finish.jpg', 'rb') as photo:
         bot.send_photo(message.chat.id, photo)
     bot.send_message(chat_id, 'Спасибо за ответы! Мы обязательно свяжемся с тобой по поводу указанного направления '
                               'стажировки. А пока ты можешь узнать о нас более подробно на нашем сайте',
